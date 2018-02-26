@@ -37,9 +37,9 @@ while len(rootPath) == 0:
 
 print("Selected {0}".format(rootPath))
 
-endpoint = 'http://10.5.5.3:8080/razuna/global/api2'
-upload_url = 'http://10.5.5.3:8080/razuna/raz2/dam/index.cfm'
-apiKey = '1276F63F421C404B98AB77F1639C805E'
+endpoint = 'http://[ADDRESS TO TOMCAT SERVER]/razuna/global/api2'
+upload_url = 'http://[ADDRESS TO TOMCAT SERVER]/razuna/raz2/dam/index.cfm'
+apiKey = 'GET YOUR OWN'
 folder_id = ''
 
 # Folder ID Entry Box
