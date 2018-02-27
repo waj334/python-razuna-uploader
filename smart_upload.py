@@ -96,8 +96,11 @@ def create_folder(name, parent_id):
     return -1
 
 def upload(fname, folderid):
+    #strip unicode characters from filename
+    file_name = str(fname.name).encode('ascii', errors='replace').decode('ascii')
+
     if os.path.getsize(fname) == 0:
-        print ("{0} is empty! Skipping...".format(os.path.split(fname)[1]))
+        print ("{0} is empty! Skipping...".format(file_name))
         return 0
 
     try:
@@ -111,11 +114,11 @@ def upload(fname, folderid):
             'fa': 'c.apiupload',
             'api_key': apiKey,
             'destfolderid': folderid,
-            'filedata': (fname.name, file, "application/octet-stream")
+            'filedata': (file_name, file, 'application/octet-stream')
         }
     )
 
-    print ("Uploading {0}...".format(os.path.split(fname)[1]))
+    print("Uploading {0}...".format(os.path.split(fname)[1]), end=' ', flush=True)
     r = requests.post(upload_url, data=payload, headers={"Content-Type": payload.content_type})
 
     file.close()
@@ -123,14 +126,14 @@ def upload(fname, folderid):
     if r.status_code == requests.codes.ok:
         data = xmltodict.parse(r.content)
         if int(data['Response']['responsecode']) == 0:
-            print('Uploaded {0}'.format(os.path.split(fname)[1]))
+            print('OK')
             return 0
         else:
             if data['Response']['message'] == 'File already exists in Razuna':
-                print("File already exists! Skipping...")
+                print("Exists! Skipping...")
                 return 0
             else:
-                print('Could not upload {0}'.format(os.path.split(fname)[1]))
+                print('FAIL')
                 print(data['Response']['message'])
     return -1
 
